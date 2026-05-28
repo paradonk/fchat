@@ -1,5 +1,7 @@
 # Family Chat
 
+![Family Chat](fchat.png)
+
 A minimal LINE-like private family chat app built with Node.js, Express, Socket.IO, and MySQL.
 
 ## Features
