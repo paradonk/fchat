@@ -31,10 +31,10 @@ Everything else should be uploaded.
 1. Log in to **cPanel**
 2. Go to **MySQL Databases**
 3. Under **Create New Database** → type `fchat` → click **Create Database**
-   - Result: `datacivi_fchat` ✓ (already set in schema.sql)
+   - Result: `fchat` ✓ (already set in schema.sql)
 4. Under **MySQL Users → Add New User** → type username `fchat` and a strong password → click **Create User**
-   - Result: `datacivi_fchat`
-5. Under **Add User to Database** → select `datacivi_fchat` user and `datacivi_fchat` database → click **Add**
+   - Result: `fchat`
+5. Under **Add User to Database** → select `fchat` user and `fchat` database → click **Add**
 6. Tick **ALL PRIVILEGES** → click **Make Changes**
 
 ---
@@ -42,7 +42,7 @@ Everything else should be uploaded.
 ## STEP 3 — Import the database schema
 
 1. In cPanel go to **phpMyAdmin**
-2. Click **`datacivi_fchat`** in the left panel
+2. Click **`fchat`** in the left panel
 3. Click the **Import** tab
 4. Click **Choose File** → select `schema.sql` from your computer
 5. Click **Go**
@@ -59,9 +59,9 @@ Replace the values marked with `← REPLACE`:
 SESSION_SECRET=← REPLACE with a long random string (get one from https://generate-secret.vercel.app/48)
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=datacivi_fchat
+DB_USER=fchat
 DB_PASSWORD=← REPLACE with the password you set in Step 2
-DB_NAME=datacivi_fchat
+DB_NAME=fchat
 PORT=3000
 NODE_ENV=production
 PUBLIC_BASE_PATH=/private/fchat
@@ -152,7 +152,7 @@ Open your domain in a browser — the login page should appear.
   ```
 
 **"Access denied" database error**
-- Double-check the user `datacivi_fchat` has ALL PRIVILEGES on database `datacivi_fchat` in MySQL Databases
+- Double-check the user `fchat` has ALL PRIVILEGES on database `fchat` in MySQL Databases
 
 ---
 
@@ -162,8 +162,8 @@ Open your domain in a browser — the login page should appear.
 App folder:    /domains/data-civil.com/public_html/private/fchat/
 Uploads:       /domains/data-civil.com/public_html/private/fchat/uploads/
 .env file:     /domains/data-civil.com/public_html/private/fchat/.env
-Database:      datacivi_fchat
-DB user:       datacivi_fchat
+Database:      fchat
+DB user:       fchat
 ```
 
 ---
@@ -175,4 +175,4 @@ DB user:       datacivi_fchat
 | Restart after uploading changes | cPanel → Node.js App → Restart |
 | View errors | cPanel → Node.js App → Logs / Stderr |
 | Back up images | FTP → download `uploads/` folder regularly |
-| Back up database | cPanel → Backup → download MySQL backup for `datacivi_fchat` |
+| Back up database | cPanel → Backup → download MySQL backup for `fchat` |
