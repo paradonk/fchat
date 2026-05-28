@@ -1,0 +1,25 @@
+CREATE DATABASE IF NOT EXISTS datacivi_fchat;
+USE datacivi_fchat;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  display_name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  message_type ENUM('text', 'image') NOT NULL DEFAULT 'text',
+  message TEXT NULL,
+  image_url VARCHAR(255) NULL,
+  original_name VARCHAR(255) NULL,
+  group_id VARCHAR(36) NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_messages_group_id (group_id),
+  CONSTRAINT fk_messages_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+);

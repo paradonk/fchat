@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Chat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="chat-body">
+  <main class="chat-app">
+    <header class="chat-header">
+      <div>
+        <p class="eyebrow">Family Chat</p>
+        <h1>Home Room</h1>
+      </div>
+      <div class="chat-header-actions">
+        <div class="online-indicator" id="onlineIndicator" aria-live="polite">
+          <span class="online-dot" aria-hidden="true"></span>
+          <span id="onlineCount">0</span> online
+          <ul id="onlineList" class="online-list" aria-label="Online members"></ul>
+        </div>
+        <span id="currentUser" class="current-user"></span>
+        <button id="logoutButton" class="secondary-button" type="button">Logout</button>
+      </div>
+    </header>
+
+    <section id="messages" class="messages" aria-live="polite"></section>
+
+    <p id="typingIndicator" class="typing-indicator" aria-live="polite" hidden></p>
+
+    <form id="messageForm" class="message-form">
+      <div class="composer-inputs">
+        <textarea
+          id="messageInput"
+          class="message-input"
+          maxlength="1000"
+          placeholder="Type a message… (Enter to send, Shift+Enter for new line)"
+          autocomplete="off"
+          rows="1"
+        ></textarea>
+        <label class="file-picker" for="imageInput">Photo</label>
+        <input
+          id="imageInput"
+          class="visually-hidden"
+          type="file"
+          multiple
+          accept="image/jpeg,image/png,image/webp,image/gif"
+        >
+        <div id="imagePreview" class="image-preview" hidden>
+          <div id="imagePreviewGrid" class="image-preview-grid" aria-live="polite"></div>
+        </div>
+      </div>
+      <button class="send-button" type="submit">Send</button>
+    </form>
+
+    <p id="chatStatus" class="status-message" aria-live="polite"></p>
+  </main>
+
+  <dialog id="imageViewer" class="image-viewer">
+    <div class="image-viewer-shell">
+      <div class="viewer-top-bar">
+        <span id="viewerCounter" class="viewer-counter" hidden></span>
+        <button id="closeViewerButton" class="viewer-close-button" type="button" aria-label="Close image viewer">Close</button>
+      </div>
+      <div class="viewer-image-wrap">
+        <button id="viewerPrevButton" class="viewer-nav-button" type="button" aria-label="Previous image" hidden>&#8249;</button>
+        <img id="viewerImage" class="viewer-image" alt="Full-size chat image">
+        <button id="viewerNextButton" class="viewer-nav-button" type="button" aria-label="Next image" hidden>&#8250;</button>
+      </div>
+      <a id="downloadImageLink" class="viewer-download-link" download>Download</a>
+    </div>
+  </dialog>
+
+  <script src="socket.io/socket.io.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>

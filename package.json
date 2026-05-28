@@ -1,0 +1,21 @@
+{
+  "name": "family-chat",
+  "version": "1.0.0",
+  "description": "Minimal LINE-like family chat using Node.js, Express, Socket.IO, and MySQL.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "express-mysql-session": "^3.0.3",
+    "express-rate-limit": "^8.5.2",
+    "express-session": "^1.19.0",
+    "helmet": "^8.2.0",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.4",
+    "socket.io": "^4.8.3"
+  }
+}

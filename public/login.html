@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Chat Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+  <main class="auth-shell">
+    <section class="auth-hero">
+      <p class="eyebrow">Private Family Room</p>
+      <h1>Stay close, even when everyone is busy.</h1>
+      <p class="hero-copy">A simple LINE-style group chat for home updates, reminders, and everyday conversation.</p>
+    </section>
+
+    <section class="auth-card">
+      <div class="tabs">
+        <button class="tab-button active" type="button" data-tab="login">Login</button>
+        <button class="tab-button" type="button" data-tab="register">Register</button>
+      </div>
+
+      <p id="authMessage" class="status-message" aria-live="polite"></p>
+
+      <form id="loginForm" class="auth-form active" data-form="login">
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" autocomplete="username" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button class="primary-button" type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="auth-form" data-form="register">
+        <label>
+          <span>Display Name</span>
+          <input type="text" name="display_name" maxlength="60" required>
+        </label>
+        <label>
+          <span>Username</span>
+          <input type="text" name="username" autocomplete="username" maxlength="50" required>
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" name="password" autocomplete="new-password" minlength="6" required>
+        </label>
+        <button class="primary-button" type="submit">Create Account</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>
