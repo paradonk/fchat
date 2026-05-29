@@ -24,6 +24,60 @@ let selectedImageFiles = [];
 let previewObjectUrls = [];
 let unreadCount = 0;
 
+// Read receipts: tracks last read message ID per other user
+const otherUsersRead = new Map();
+
+function getArticleMaxMsgId(article) {
+  const direct = Number(article.dataset.messageId);
+  if (direct > 0) return direct;
+  let max = 0;
+  article.querySelectorAll(".chat-image-item[data-message-id]").forEach((item) => {
+    const id = Number(item.dataset.messageId);
+    if (id > max) max = id;
+  });
+  return max;
+}
+
+function getAllMaxMsgId() {
+  let max = 0;
+  messagesContainer.querySelectorAll("article").forEach((article) => {
+    const id = getArticleMaxMsgId(article);
+    if (id > max) max = id;
+  });
+  return max;
+}
+
+function updateReadIndicators() {
+  if (!currentUser) return;
+  messagesContainer.querySelectorAll(".message-row.own").forEach((article) => {
+    const msgId = getArticleMaxMsgId(article);
+    if (!msgId) return;
+
+    const isRead = Array.from(otherUsersRead.entries()).some(
+      ([userId, readId]) => String(userId) !== String(currentUser.id) && readId >= msgId
+    );
+
+    const timeEl = article.querySelector(".message-time");
+    if (!timeEl) return;
+
+    let receipt = timeEl.querySelector(".read-receipt");
+    if (isRead && !receipt) {
+      receipt = document.createElement("span");
+      receipt.className = "read-receipt";
+      receipt.textContent = "Read";
+      timeEl.appendChild(receipt);
+    } else if (!isRead && receipt) {
+      receipt.remove();
+    }
+  });
+}
+
+function emitRead() {
+  if (!socket) return;
+  const maxId = getAllMaxMsgId();
+  if (maxId > 0) socket.emit("chat:read", maxId);
+}
+
 const basePath = window.location.pathname
   .replace(/\/(chat\.html)?$/, "")
   .replace(/\/$/, "");
@@ -305,6 +359,7 @@ function notifyNewMessage(message) {
 window.addEventListener("focus", () => {
   unreadCount = 0;
   document.title = "Family Chat";
+  emitRead();
 });
 
 // --- Message deletion ---
@@ -376,6 +431,22 @@ function connectSocket() {
     currentUser = user;
     currentUserLabel.textContent = `Logged in as ${currentUser.display_name}`;
     requestNotificationPermission();
+    emitRead();
+  });
+
+  socket.on("chat:read_status", (statuses) => {
+    statuses.forEach(({ userId, lastReadMessageId }) => {
+      otherUsersRead.set(String(userId), lastReadMessageId);
+    });
+    updateReadIndicators();
+  });
+
+  socket.on("chat:read", ({ userId, lastReadMessageId }) => {
+    const current = otherUsersRead.get(String(userId)) || 0;
+    if (lastReadMessageId > current) {
+      otherUsersRead.set(String(userId), lastReadMessageId);
+      updateReadIndicators();
+    }
   });
 
   socket.on("chat:message", (message) => {
@@ -383,6 +454,7 @@ function connectSocket() {
     renderMessage(message);
     scrollToBottom();
     notifyNewMessage(message);
+    emitRead();
   });
 
   socket.on("chat:delete_group", ({ group_id }) => {

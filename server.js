@@ -515,6 +515,29 @@ io.on("connection", (socket) => {
 
   socket.emit("chat:ready", { user: currentUser });
 
+  // Register all event handlers synchronously before any async work
+  socket.on("chat:read", async (lastReadMessageId) => {
+    const msgId = Number(lastReadMessageId);
+    if (!Number.isInteger(msgId) || msgId <= 0) return;
+    try {
+      await pool.query(
+        `INSERT INTO user_read_status (user_id, last_read_message_id) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE last_read_message_id = GREATEST(last_read_message_id, ?)`,
+        [currentUser.id, msgId, msgId]
+      );
+      io.emit("chat:read", { userId: currentUser.id, lastReadMessageId: msgId });
+    } catch (err) {
+      log.error("Read status update error", { error: err.message });
+    }
+  });
+
+  // Send all users' read statuses to the newly connected client
+  pool.query("SELECT user_id, last_read_message_id FROM user_read_status")
+    .then(([readRows]) => {
+      socket.emit("chat:read_status", readRows.map((r) => ({ userId: r.user_id, lastReadMessageId: r.last_read_message_id })));
+    })
+    .catch((err) => log.error("Read status fetch error", { error: err.message }));
+
   socket.on("chat:message", async (payload) => {
     const rawMessage = payload && typeof payload.message === "string" ? payload.message : "";
     const message = rawMessage.trim();

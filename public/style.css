@@ -390,6 +390,13 @@ input:focus {
   align-items: flex-end;
 }
 
+/* Read receipt — "อ่านแล้ว" shown under own-message timestamp */
+.read-receipt {
+  font-size: 0.65rem;
+  color: #4d9f32;
+  font-weight: 600;
+}
+
 /* Delete button lives inside the timestamp block, visible on hover */
 .delete-message-button {
   margin-top: 3px;

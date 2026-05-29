@@ -15,6 +15,7 @@ A minimal LINE-like private family chat app built with Node.js, Express, Socket.
 - Multi-image messages grouped and displayed as a grid
 - Last 100 messages loaded on page entry
 - Delete your own messages (text or image)
+- Read receipts — "Read" shown on your sent messages once another member reads them
 - Online users list updated in real time
 - Typing indicator broadcast to other users
 - Rate limiting on auth endpoints (20 requests per 15 minutes)
